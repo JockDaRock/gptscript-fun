@@ -1,0 +1,84 @@
+tools: sys.http.get, sys.http.html2text, sys.find, sys.write, mongo_run, mongo_command, init_flask_project, executable, find_python_latest_package_versions
+
+Perform the following actions in this order:
+
+1. Start the MongoDB database.
+
+2. Create a collection in the Mongo instance called `headlines`.
+
+3. Visit https://hackernews.com/show and get the top ten headlines.
+
+4. Call the init_flask_project tool to set up the directories you will need.
+
+5. Write each headline into the MongoDB collection that you created earlier called `headlines`. Write each one using a separate call to the mongo_command tool. The name of the database in Mongo that these will be written to is `headlines`. Don't forget to escape any quotation marks or apostrophes that appear in the headlines. Don't forget to use all appropriate quotation marks and apostrophes in the command.
+
+6. Generate a simple webserver in Python using Flask that will connect to the database and serve a single page listing all the headlines. Create it in the `headline` directory. Embed a link to the article in each headline displayed on the page. Make sure the Flask server is able to serve the webpage by generating the html content.
+
+7. Add some basic CSS styling to make the page look cool and modern. I want it to be dark themed. Style the links to be a light gray color. Make sure the page has a neat header with red accents and the generated html takes into account the existence of the CSS file.
+
+8. Look up all dependencies, using the variable PACKAGE_NAME, with the python libaries needed for the app.py file, using the tool find_python_latest_package_versions. Search for each PACKAGE_NAME using a separate call to the ind_python_latest_package_versions tool. Example: find_python_latest_package_versions -> {"PACKAGE_NAME": "requirements"}. Then, with each version, create the requirements.txt file needed for all of the packages for the Flask webserver.
+
+9. Write a cleanup script, called gpt_cleanup.sh that will first, stop the docker container named mongodb, removal of the container is not needed, second, the script will then delete itself, and then last delete the headline directory, do not change directories in the script.
+
+10. Write a bash script, in the headline directory, filename "start.sh", that will check if venv is installed on the computer, if not installed, pip install the venv globally from the bash script. Then write logic into the script that will run a venv environment, install the required libaries to run the Flask app, and then run the flask app. Add logic, where upon exit for any reason, the script will deactivate venv.
+
+11. Make each newly created bash script executable to the bash terminal for execution in the future. Specify the file name for each bash script to make executable.
+
+---
+name: mongo_run
+description: starts a MongoDB database
+
+#!/usr/bin/env bash
+
+# The name of your container
+CONTAINER_NAME=mongodb
+
+# Check if the container already exists
+if docker ps -a --format '{{.Names}}' | grep -Eq "^${CONTAINER_NAME}\$"; then
+    echo "Container ${CONTAINER_NAME} exists."
+
+    # Check if the container is already running
+    if ! docker ps --format '{{.Names}}' | grep -Eq "^${CONTAINER_NAME}\$"; then
+        echo "Starting existing container ${CONTAINER_NAME}."
+        docker start ${CONTAINER_NAME}
+    else
+        echo "Container ${CONTAINER_NAME} is already running."
+    fi
+else
+    echo "Container ${CONTAINER_NAME} does not exist. Running a new one."
+    docker run --rm -d -p 27017:27017 --name ${CONTAINER_NAME} mongo:latest
+fi
+
+---
+name: mongo_command
+description: run a command in the MongoDB database
+args: command: the command to run in mongodb
+
+#!/usr/bin/env bash
+
+mongosh mongodb://localhost:27017/headlines --eval "$COMMAND"
+
+---
+name: init_flask_project
+description: sets up initial directory structure needed for the flask project
+
+#!/usr/bin/env bash
+
+mkdir -p headline/{templates,static}
+
+---
+name: executable
+description: makes the generated run/start script executable to the bash terminal.
+
+#!/usr/bin/env bash
+
+chmod +x $FILENAME
+ls -alt headline
+
+---
+name: find_python_latest_package_versions
+description: find latest version of Python packages.
+
+#!/usr/bin/env bash
+
+curl -s 'https://pypi.org/pypi/'$PACKAGE_NAME'/json' | sed -n 's|.*"version":"\([^"]*\)".*|\1|p'
