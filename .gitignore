@@ -1,3 +1,12 @@
 .env
 clus-2024-demo
 headline
+testing/meraki/*.md
+testing/cdo/*.md
+testing/meraki/*.cs
+testing/cdo/*.cs
+testing/meraki/*.rs
+testing/cdo/*.rs
+testing/meraki/gptscript
+testing/cdo/gptscript
+saved_urls

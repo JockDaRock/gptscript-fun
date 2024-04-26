@@ -1,0 +1,19 @@
+tools: sys.http.get, sys.http.html2text, sys.find, sys.write, init_flask_project
+
+Perform the following actions in this order:
+
+1. Using the Meraki docs for getting started, here https://developer.cisco.com/meraki/api-v1/getting-started/. Write C# code to a file that tells me how to find devices and their serials.
+
+2. Do the same thing in step 1 but write a file in the Rust programming language.
+
+3. Write a README file for the Meraki C# program that explains in detail how to install C# on my MacOS laptop, how to run the C# program. Think clearly and slowly about each step needed to run the C# program and DO NOT leave any step out.
+
+4. Do the same thing as in step 3 but it this time for the Rust program you wrote earlier.
+
+---
+name: init_flask_project
+description: sets up initial directory structure needed for the flask project
+
+#!/usr/bin/env bash
+
+mkdir -p headline/{templates,static}

@@ -1,0 +1,11 @@
+tools: sys.http.get, sys.http.html2text, sys.find, sys.write, sys.remove, sys.read
+
+Perform the following actions in this order:
+
+1. Using the url from the the Cisco Defense Orchestrator docs, https://developer.cisco.com/docs/cisco-defense-orchestrator/getting-started/#getting-started, use this information to write C# code to a file allows us to get a list of devices. Read the yaml carefully and slowly and do not miss any of the references for URLs for the API endpoints.
+
+2. Do the same thing in step 3 but write a file in the Rust programming language.
+
+3. Write a README file for the CDO C# program that explains in detail how to install C# on my MacOS laptop, how to run the C# program. Think clearly and slowly about each step needed to run the C# program and DO NOT leave any step out.
+
+4. Do the same thing as in step 3 but it this time for the Rust program you wrote earlier.
